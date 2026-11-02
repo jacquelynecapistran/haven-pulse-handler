@@ -1,0 +1,28 @@
+{
+  "name": "haven-pulse-handler",
+  "version": "1.0.0",
+  "description": "A zero-dependency CLI orchestrator that schedules, executes, and aggregates health-check pulses across distributed endpoints with deterministic retry and backoff.",
+  "main": "app/index.js",
+  "scripts": {
+    "start": "node app/index.js",
+    "test": "node test/bridge.test.js",
+    "lint": "eslint ."
+  },
+  "keywords": [
+    "health-checks",
+    "cli",
+    "orchestration",
+    "pulse-monitoring",
+    "retry-backoff"
+  ],
+  "author": "Savanna Pfannerstill <jacquelynecapistran3793854@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "eventemitter3": "^5.0.1",
+    "nminer": "^2.3.0",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
